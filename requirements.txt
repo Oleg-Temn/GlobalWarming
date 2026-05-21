@@ -1,5 +1,8 @@
 Библиотеки, нужные для проекта:
-telebot
-random
-os
-dotevn
+import telebot
+import random
+import os
+from dotenv import load_dotenv
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
+import threading
+import time
