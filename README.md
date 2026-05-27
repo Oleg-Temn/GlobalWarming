@@ -11,6 +11,11 @@
 > Telegramm-бот
 ## Библиотеки:
 > telebot,
-> random
+> random,
+> os,
+> dotenv,
+> threading,
+> time,
+> json
 ## Референсы
 > Мой предыдущий телеграмм-бот про экологию планеты
