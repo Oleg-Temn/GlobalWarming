@@ -91,6 +91,7 @@ class Plants:
         self.soil = 0
         self.canGrow = False
 
+
 players = {}
 
 def get_game_text(game):
@@ -147,10 +148,14 @@ dop4 = ""
 @bot.message_handler(commands=["start_game"])
 def start_game(message):
     chat_id = message.chat.id
-    
-    # Создаем или сбрасываем огород конкретного пользователя
-    players[chat_id] = Plants(chat_id)
-    game = players[chat_id]
+    if chat_id in players:
+        # возвращаем пользователя в огород
+        game = players[chat_id]
+        bot.send_message(chat_id, "Вы вернулись в свой огород! Игра продолжается.")
+    else:
+        # Создаем огород конкретного пользователя
+        players[chat_id] = Plants(chat_id)
+        game = players[chat_id]
 
     # Создаем клавиатуру
     markup = InlineKeyboardMarkup()
@@ -214,6 +219,7 @@ def callback_listener(call):
         if game.ripeness == 0 and not game.canGrow:
             game.canGrow = True
             game.water = 5  # сбрасываем воду до нормы при посадке
+            game.ripeness = 1
             alert_text = "Вы успешно посадили растения! Теперь они растут."
         else:
             alert_text = "У вас уже что-то растет на грядке!"
@@ -287,6 +293,9 @@ def auto_save_loop():
 save_thread = threading.Thread(target=auto_save_loop, daemon=True)
 save_thread.start()
 
+load_all_players()
+
+bot.infinity_polling()
 load_all_players()
 
 bot.infinity_polling()
