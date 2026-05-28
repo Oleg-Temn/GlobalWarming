@@ -85,18 +85,20 @@ def rando(message):
 
 @bot.message_handler(commands=["global_warming"])
 def gw(message):
-    text = ("Глобальное потепление — это долгосрочное повышение средней температуры климатической системы Земли, "
-            "продолжающееся уже более века. По данным Организации Объединенных Наций, "
-            "главная причина происходящего — активная деятельность человека и так называемый парниковый эффект."
+    text = ("♨️Глобальное потепление♨️ — это долгосрочное повышение средней температуры климатической системы Земли🌍, "
+            "продолжающееся уже более века💯. По данным Организации Объединенных Наций, "
+            "главная причина происходящего — активная деятельность человека👨‍🦰 и так называемый парниковый эффект🧖."
             "Ниже подробно разобраны ключевые аспекты этого явления.\nГлавные причины:\n"
-            "1. Антропогенный фактор (деятельность человека): Сжигание ископаемого топлива (уголь, нефть, газ), масштабная вырубка лесов и сельское хозяйство приводят к выделению огромных объемов газов.\n"
-            "2. Парниковый эффект: Углекислый газ, метан и закись азота накапливаются в атмосфере, пропуская солнечный свет к Земле, но удерживая тепло, которое планета должна была излучать обратно в космос.\n"
-            "Основные последствия для планеты:\n"
-            "-- Таяние ледников: Повышение температур приводит к быстрому таянию ледников в Арктике, Антарктиде и горных массивах.\n"
-            "-- Повышение уровня моря: Из-за таяния льдов и теплового расширения воды уровень Мирового океана неуклонно растет. Это угрожает затоплением прибрежным зонам и островным государствам.\n"
-            "-- Экстремальные погодные явления: Климатические изменения провоцируют учащение аномальных засух, лесных пожаров, разрушительных ураганов и сильных наводнений.Угроза для экосистем и сельского хозяйства: Изменение климата нарушает привычные условия обитания многих видов животных, а также напрямую влияет на продовольственную безопасность, снижая урожайность сельскохозяйственных культур.\n"
+            "1. Антропогенный фактор (деятельность человека👱‍♂️): Сжигание ископаемого топлива🛢 (уголь, нефть, газ), масштабная вырубка лесов🪵 и сельское хозяйство приводят к выделению огромных объемов газов.\n"
+            "2. Парниковый эффект🧖: Углекислый газ, метан и закись азота накапливаются в атмосфере🌥, пропуская солнечный свет к Земле, но удерживая тепло🌡, которое планета должна была излучать обратно в космос🌌.\n"
+            "Основные последствия для планеты🌏:\n"
+            "-- Таяние ледников🧊: Повышение температур приводит к быстрому таянию ледников в Арктике, Антарктиде и горных массивах.\n"
+            "-- Повышение уровня моря🌊: Из-за таяния льдов и теплового расширения воды уровень Мирового океана неуклонно растет. Это угрожает затоплением прибрежным зонам и островным государствам.\n"
+            "-- Экстремальные погодные явления⛈: Климатические изменения провоцируют учащение аномальных засух🏜, лесных пожаров🔥, разрушительных ураганов🌪 и сильных наводнений💦.\n"
+            "Угроза для экосистем и сельского хозяйства🌿:\n"
+            "Изменение климата нарушает привычные условия обитания многих видов животных🐸, а также напрямую влияет на продовольственную безопасность🌾, снижая урожайность сельскохозяйственных культур.\n"
             "Что предпринимается в мире:\n"
-            "Чтобы не допустить катастрофических изменений климата, большинство стран мира присоединились к Парижскому соглашению. Его главная цель — удержать рост глобальной средней температуры на отметке. Для этого государства переходят на возобновляемые источники энергии (солнечную, ветровую) и снижают углеродный след.Более подробно ознакомиться с научными данными, прогнозами и способами решения проблемы можно на официальном Портале ООН по изменению климата.")
+            "Чтобы не допустить катастрофических изменений климата, большинство стран🇷🇺 мира присоединились к Парижскому соглашению. Его главная цель — удержать рост глобальной средней температуры на отметке. Для этого государства переходят на возобновляемые источники энергии (солнечную☀️, ветровую🌬) и снижают углеродный след. Более подробно ознакомиться с научными данными, прогнозами и способами решения проблемы можно на официальном Портале ООН по изменению климата.")
     bot.send_message(message.chat.id, text)
 
 @bot.message_handler(commands=["help"])
@@ -130,6 +132,10 @@ class Plants:
         self.recently_index = 0
         self.autowater = False
         self.autowater2 = "Выкл."
+        self.autoharvest = False
+        self.autoharvest2 = "Выкл."
+        self.autoplant = False
+        self.autoplant2 = "Выкл."
         
         # Запускаем персональный цикл роста для этого игрока
         self.start_growth_timer()
@@ -155,6 +161,23 @@ class Plants:
                 plot.ripeness = plot.ripeness + 1 # Прибавляем ровно 1 стадию
                 if self.autowater2 == "Вкл.":
                     plot.water += 1
+                if self.autoharvest2 == "Вкл.":
+                    for index, plot in enumerate(self.plots):
+                        if 10 > plot.ripeness >= 8:
+                            self.money += 1
+                            plot.canGrow = False
+                            plot.ripeness = 0
+                            plot.water = 5
+                            if self.autoplant2 == "Вкл.":
+                                plot.canGrow = True
+                                plot.ripeness = 1
+                        elif plot.ripeness >= 10:
+                            plot.canGrow = False
+                            plot.ripeness = 0
+                            plot.water = 5
+                            if self.autoplant2 == "Вкл.":
+                                plot.canGrow = True
+                                plot.ripeness = 1
                 need_update_ui = True
                 
         # Обновляем сообщение в Телеграм, если что-то выросло
@@ -185,6 +208,10 @@ def get_main_keyboard(game):
         markup.row(btn_water, btn_plant, btn_harvest)
     if game.autowater == True:
         markup.add(InlineKeyboardButton(f"🫙Автополив: {game.autowater2}", callback_data="autowater2"))
+    if game.autoharvest == True:
+        markup.add(InlineKeyboardButton(f"👨‍🌾Автосборщик: {game.autoharvest2}", callback_data="autoharvest2"))
+    if game.autoplant == True:
+        markup.add(InlineKeyboardButton(f"✨Автопосадка: {game.autoplant2}", callback_data="autoplant2"))
     markup.add(InlineKeyboardButton("🏪 Магазин", callback_data="shop"))
     return markup
 
@@ -268,6 +295,9 @@ def callback_listener(call):
                 current_plot.ripeness = 0
                 current_plot.canGrow = False
                 bot.answer_callback_query(call.id, f"Вы собрали урожай не вовремя")
+            if game.autoplant2 == "Вкл.":
+                current_plot.canGrow = True
+                current_plot.ripeness = 1
         elif action == "plant":
             if current_plot.canGrow == False:
                 current_plot.canGrow = True
@@ -286,6 +316,10 @@ def callback_listener(call):
         shop_markup.add(InlineKeyboardButton(f"🧪 Приобрести ускоритель роста({10 * round(game.growth_speed, 1)})", callback_data="boost"))
         if game.autowater == False:
             shop_markup.add(InlineKeyboardButton(f"🧃 Приобрести автополив(10)", callback_data="auto-water"))
+        if game.autoharvest == False:
+            shop_markup.add(InlineKeyboardButton(f"👨‍🌾 Купить автосборщик(50)", callback_data="auto-harvest"))
+        if game.autoplant == False:
+            shop_markup.add(InlineKeyboardButton(f"✨ Купить автосеятель(25)", callback_data="auto-plant"))
         shop_markup.add(InlineKeyboardButton("⬅️ Назад", callback_data="back"))
 
         bot.edit_message_text(
@@ -348,6 +382,43 @@ def callback_listener(call):
             game.autowater2 = "Вкл."
         elif game.autowater2 == "Вкл.":
             game.autowater2 = "Выкл."
+    
+
+    elif call.data == "auto-harvest":
+        cost = 50
+        if game.money >= cost:
+            game.money -= cost
+            game.autoharvest = True
+            game.autoharvest2 = "Вкл."
+            alert = f"Успешно куплен автосборщик! Теперь ваш урожай будет автоматически собран по готовности"
+        else:
+            alert = f"Нехватает монет! Нужно еще {cost - game.money}"
+        bot.answer_callback_query(call.id, alert, show_alert=True)
+    
+
+    elif call.data == "autoharvest2":
+        if game.autoharvest2 == "Выкл.":
+            game.autoharvest2 = "Вкл."
+        elif game.autoharvest2 == "Вкл.":
+            game.autoharvest2 = "Выкл."
+    
+
+    elif call.data == "auto-plant":
+        cost = 25
+        if game.money >= cost:
+            game.money -= cost
+            game.autoplant = True
+            game.autoplant2 = "Вкл."
+            alert = f"Успешно куплен автосеятель! Теперь ваш урожай будет автоматически посеян по свободе грядки"
+        else:
+            alert = f"Нехватает монет! Нужно еще {cost - game.money}"
+
+
+    elif call.data == "autoplant2":
+        if game.autoplant2 == "Выкл.":
+            game.autoplant2 = "Вкл."
+        elif game.autoplant2 == "Вкл.":
+            game.autoplant2 = "Выкл."
     # После любого действия обновляем текст сообщения интерфейса
     try:
         bot.edit_message_text(
@@ -384,7 +455,11 @@ def save_all_players():
             "growth_speed": game.growth_speed,
             "plots": player_plots,  # Сохраняем готовый список словарей грядок
             "autowater": game.autowater,
-            "autowater2": game.autowater2
+            "autowater2": game.autowater2,
+            "autoharvest": game.autoharvest,
+            "autoharvest2": game.autoharvest2,
+            "autoplant": game.autoplant,
+            "autoplant2": game.autoplant2
         }
     
     with open(SAVE_FILE, "w", encoding="utf-8") as f:
@@ -409,6 +484,10 @@ def load_all_players():
                     game.growth_speed = stats.get("growth_speed", 1.0)
                     game.autowater = stats.get("autowater", False)
                     game.autowater2 = stats.get("autowater2", "Выкл.")
+                    game.autoharvest = stats.get("autoharvest", False)
+                    game.autoharvest2 = stats.get("autoharvest2", "Выкл.")
+                    game.autoplant = stats.get("autoplant", False)
+                    game.autoplant2 = stats.get("autoplant2", "Выкл.")
                     
                     # Очищаем дефолтную грядку, созданную при старте класса, 
                     # чтобы загрузить точное количество из файла
@@ -448,5 +527,20 @@ save_thread = threading.Thread(target=auto_save_loop, daemon=True)
 save_thread.start()
 
 load_all_players()
+
+def set_bot_commands():
+    try:
+        commands = [
+            telebot.types.BotCommand("start_game", "🏡 Открыть огород / Начать игру"),
+            telebot.types.BotCommand("random_fact", "⁉️Случайный факт о глобальном потеплении"),
+            telebot.types.BotCommand("global_warming", "♨️Что такое глобальное потепление"),
+            telebot.types.BotCommand("help", "❓ Показать инструкцию и помощь")
+        ]
+        bot.set_my_commands(commands)
+        print("✅ Подсказки команд успешно загружены в Telegram!")
+    except Exception as e:
+        print(f"⚠️ Не удалось загрузить подсказки: {e}")
+
+set_bot_commands()
 
 bot.infinity_polling()
